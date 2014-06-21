@@ -42,7 +42,7 @@ testingSet <- testingset[, -highCorr]
 ```
 This reduces the number of predictors to `r dim(trainingSet)[2]`. Now that the final set of predictors is determined, the values may require transformations, ex centering or scaling, before being used in a model. 
 
-The *preProcess* function from caret package can be used for predictor transformations in the training set and we standadardize the variables.
+The *preProcess* function from caret package can be used for predictor transformations in the training set and we scale and standadardize the variables.
 
 ```{r}
 preproc <- preProcess(trainingSet[, -c(1:7,53)],method="center")
@@ -65,7 +65,8 @@ We apply the Random Forests algorithm for training our model. Here is a brief su
   * Create N decision trees with $\sqrt{n}$ random features.
   * Pass a new through each tree and classify according to the majority vote.
 
-While creating a decision tree using a bootstrap sample, one-third of the cases are left out of the sample while constructing the decision tree. We use this left out set to test how well the algorithm performed, and the estimate is called **Out of Bag** error. Therefore, in random forests, there is no need for cross-validation or a separate test set to get an unbiased estimate of the test set error. It is estimated internally by OOB error during the run as explaned in Breiman's blog.
+While creating a decision tree using a bootstrap sample, one-third of the cases are left out of the sample 
+while constructing the decision tree. We use this left out set to test how well the algorithm performed, and the estimate is called **Out of Bag** error. Therefore, in random forests, there is no need for cross-validation or a separate test set to get an unbiased estimate of the test set error. It is estimated internally by OOB error during the run as explaned in Breiman's blog.
 ```{r,message=FALSE}
 library(randomForest)
 modelforest<-randomForest(classe~.,data=proctrainset,imp=T)
